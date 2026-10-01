@@ -5,14 +5,14 @@ services:
     plan: free
     branch: main
     autoDeployTrigger: commit
-    healthCheckPath: /v3/api-docs
+    healthCheckPath: /swagger-ui/index.html
     envVars:
       - key: DB_HOST
         sync: false
       - key: DB_PORT
-        value: "3306"
+        value: "6543"
       - key: DB_NAME
-        value: crud_usuarios
+        value: postgres
       - key: DB_USERNAME
         sync: false
       - key: DB_PASSWORD
