@@ -16,6 +16,9 @@ import com.jcaa.usersmanagement.infrastructure.adapter.persistence.mapper.UserPe
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +28,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Primary
+@Repository
 @RequiredArgsConstructor
 public class UserRepositoryMySQL
+
     implements SaveUserPort,
         UpdateUserPort,
         GetUserByIdPort,
