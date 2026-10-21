@@ -5,6 +5,7 @@ import com.jcaa.usersmanagement.domain.model.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Base64;
@@ -28,7 +29,17 @@ public class JwtTokenService {
   }
 
   JwtTokenService(final JwtProperties properties, final Clock clock) {
-    this.signingKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(properties.secret()));
+    byte[] keyBytes;
+    try {
+      keyBytes = Base64.getDecoder().decode(properties.secret());
+    } catch (IllegalArgumentException e) {
+      try {
+        keyBytes = Base64.getUrlDecoder().decode(properties.secret());
+      } catch (IllegalArgumentException ex) {
+        keyBytes = properties.secret().getBytes(StandardCharsets.UTF_8);
+      }
+    }
+    this.signingKey = Keys.hmacShaKeyFor(keyBytes);
     this.expirationSeconds = properties.expirationSeconds();
     this.clock = clock;
   }
@@ -53,7 +64,8 @@ public class JwtTokenService {
             .build()
             .parseSignedClaims(token)
             .getPayload();
-    return new JwtPrincipal(claims.getSubject(), UserRole.fromString(claims.get(ROLE_CLAIM, String.class)));
+    return new JwtPrincipal(
+        claims.getSubject(), UserRole.fromString(claims.get(ROLE_CLAIM, String.class)));
   }
 
   public long expirationSeconds() {
