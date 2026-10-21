@@ -6,13 +6,13 @@ public record DatabaseConfig(
     if (port == 5432 || port == 6543) {
       return String.format("jdbc:postgresql://%s:%d/%s?sslmode=require", host, port, databaseName);
     }
-    if (port == 4000) {
+    if (port == 3306) {
       return String.format(
-          "jdbc:mysql://%s:%d/%s?useSSL=true&sslMode=VERIFY_IDENTITY&serverTimezone=UTC&allowPublicKeyRetrieval=true",
+          "jdbc:mysql://%s:%d/%s?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
           host, port, databaseName);
     }
     return String.format(
-        "jdbc:mysql://%s:%d/%s?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
+        "jdbc:mysql://%s:%d/%s?useSSL=true&sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true",
         host, port, databaseName);
   }
 }
