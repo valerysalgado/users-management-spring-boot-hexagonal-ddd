@@ -27,7 +27,7 @@ public record DatabaseConfig(
           host, port, databaseName);
     }
     return String.format(
-        "jdbc:mysql://%s:%d/%s?useSSL=true&sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true",
+        "jdbc:mysql://%s:%d/%s?sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true",
         host, port, databaseName);
   }
 }
